@@ -1,5 +1,6 @@
 const express = require("express");
 const mongoose = require("mongoose");
+const bodyParser = require("body-parser");
 
 const users = require("./routes/api/users");
 const posts = require("./routes/api/posts");
@@ -7,6 +8,10 @@ const profile = require("./routes/api/profile");
 
 //Initialize express
 const app = express();
+
+//Body parser middleware
+app.use(bodyParser.urlencoded({ extended: false }));
+app.use(bodyParser.json());
 
 //DB Config
 const db = require("./config/keys").mongoURI;
@@ -19,11 +24,12 @@ mongoose
   })
   .catch(err => console.log(err));
 
+//Root Page
 app.get("/", (req, res) => {
   res.send("Hello Mate");
 });
 
-//use routes
+//Use routes
 app.use("/api/users", users);
 app.use("/api/profile", profile);
 app.use("/api/posts", posts);
